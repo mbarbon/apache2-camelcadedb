@@ -3,6 +3,27 @@ package Apache2::Camelcadedb;
 use strict;
 use warnings;
 
+=head1 NAME
+
+Apache2::Camelcadedb - mod_perl2 integration for Devel::Camelcadedb
+
+=head1 SYNOPSIS
+
+In mod_perl2 startup code:
+
+    use Apache2::Camelcadedb remote_host => 'localhost:12345';
+
+In apache.conf
+
+    # they don't have to be PostReadRequest and Cleanup, as long
+    # as they are early and late in the request lifecycle
+    PerlPostReadRequestHandler Apache2::Camelcadedb::start_debug_handler
+    PerlCleanupHandler Apache2::Camelcadedb::stop_debug_handler
+
+=cut
+
+our $VERSION = '0.01';
+
 use constant {
     DEBUG_SINGLE_STEP_ON        =>  0x20,
     DEBUG_USE_SUB_ADDRESS       =>  0x40,
@@ -72,3 +93,18 @@ sub stop_debug_handler {
 }
 
 1;
+
+__END__
+
+=head1 AUTHOR
+
+Mattia Barbon <mbarbon@cpan.org>
+
+=head1 LICENSE
+
+Copyright (c) 2015-2016 Mattia Barbon. All rights reserved.
+
+This library is free software; you can redistribute it and/or modify it
+under the same terms as Perl itself.
+
+=cut
