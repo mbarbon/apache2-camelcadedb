@@ -35,7 +35,7 @@ execution continues as normal.
 
 =cut
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 use constant {
     DEBUG_SINGLE_STEP_ON        =>  0x20,
