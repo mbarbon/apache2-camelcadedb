@@ -15,7 +15,7 @@ my $listen_address = do {
 };
 my $fake_dbg = IO::Socket::INET->new(
     LocalAddr => $listen_address,
-    ReusePort => 1,
+    ReuseAddr => 1,
     Listen    => 5,
 );
 die "Unable to set up debugger socket: $!" unless $fake_dbg;

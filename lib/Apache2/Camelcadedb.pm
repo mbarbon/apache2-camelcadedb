@@ -9,11 +9,12 @@ Apache2::Camelcadedb - mod_perl2 integration for Devel::Camelcadedb
 
 =head1 SYNOPSIS
 
-In mod_perl2 startup code:
+Note that this module only work with mpm_prefork.
 
-    use Apache2::Camelcadedb remote_host => 'localhost:12345';
+When using a pure mod_perl application, add the following in F<apache.conf>
 
-In apache.conf
+    PerlSetEnv APACHE2_CAMELCADEDB_REMOTE_HOST localhost:12345
+    PerlModule Apache2::Camelcadedb::Setup
 
     # they don't have to be PostReadRequest and Cleanup, as long
     # as they are early and late in the request lifecycle
@@ -37,6 +38,13 @@ execution continues as normal.
 
 our $VERSION = '0.02';
 
+BEGIN {
+    require Apache2::MPM;
+    die Apache2::MPM->show, ' ', Apache2::MPM->is_threaded;
+    if (Apache2::MPM->show ne 'Prefork') {
+    }
+}
+
 use constant {
     DEBUG_SINGLE_STEP_ON        =>  0x20,
     DEBUG_USE_SUB_ADDRESS       =>  0x40,
@@ -53,9 +61,10 @@ use constant {
 sub import {
     my ($class, %args) = @_;
 
-    die "Specify 'remote_host'"
-        unless $args{remote_host};
-    my ($host, $port) = split /:/, $args{remote_host}, 2;
+    my $remote_host = $args{remote_host} || $ENV{APACHE2_CAMELCADEDB_REMOTE_HOST};
+    die "Set APACHE2_CAMELCADEDB_REMOTE_HOST via PerlSetEnv"
+        unless $remote_host;
+    my ($host, $port) = split /:/, $remote_host, 2;
 
     $ENV{PERL5_DEBUG_HOST} = $host;
     $ENV{PERL5_DEBUG_PORT} = $port;

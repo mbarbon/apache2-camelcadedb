@@ -1,4 +1,7 @@
 lib/Apache2/Camelcadedb.pm
+lib/Apache2/Camelcadedb/Registry.pm
+lib/Apache2/Camelcadedb/RegistryBB.pm
+lib/Apache2/Camelcadedb/Setup.pm
 Changes
 Makefile.PL
 MANIFEST			This list of files
@@ -6,4 +9,5 @@ t/001_load.t
 t/010_sanity.t
 t/app/HelloWorld.pm
 t/conf/extra.conf.in
-t/lib/LoadCamelcade.pm
+t/htdocs/registry/cgi.pl
+t/htdocs/registrybb/cgi.pl

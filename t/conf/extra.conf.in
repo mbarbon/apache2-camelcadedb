@@ -1,6 +1,10 @@
 PerlSwitches -I@ServerRoot@/app
 
-PerlModule LoadCamelcade
+# for ad-hoc debugging
+PerlSetEnv APACHE2_CAMELCADEDB_REMOTE_HOST localhost:12345
+
+PerlModule blib
+PerlModule Apache2::Camelcadedb::Setup
 PerlModule HelloWorld
 
 PerlPostReadRequestHandler Apache2::Camelcadedb::start_debug_handler
@@ -9,4 +13,22 @@ PerlCleanupHandler Apache2::Camelcadedb::stop_debug_handler
 <Location /hello>
     SetHandler modperl
     PerlResponseHandler HelloWorld
+</Location>
+
+PerlModule Apache2::Camelcadedb::Registry
+
+<Location /registry>
+    SetHandler perl-script
+    PerlHandler Apache2::Camelcadedb::Registry
+    PerlOptions +ParseHeaders
+    Options +ExecCGI
+</Location>
+
+PerlModule Apache2::Camelcadedb::RegistryBB
+
+<Location /registrybb>
+    SetHandler perl-script
+    PerlHandler Apache2::Camelcadedb::RegistryBB
+    PerlOptions +ParseHeaders
+    Options +ExecCGI
 </Location>
